@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تغيير حجم الصورة</title>
+</head>
+<body>
+<label for="widthInput">العرض (بالبكسل):</label>
+<input type="number" id="widthInput" placeholder="أدخل العرض">
+<label for="heightInput">الارتفاع (بالبكسل):</label>
+<input type="number" id="heightInput" placeholder="أدخل الارتفاع">
+<input type="file" accept="image/*" onchange="resizeImage(event)">
+<canvas id="canvas"></canvas>
+<script>
+function resizeImage(event) {
+  const file = event.target.files[0];
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
+      const widthInput = document.getElementById('widthInput').value;
+      const heightInput = document.getElementById('heightInput').value;
+      let width = img.width;
+      let height = img.height;
+
+      if (widthInput) {
+        width = parseInt(widthInput);
+      }
+
+      if (heightInput) {
+        height = parseInt(heightInput);
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      ctx.drawImage(img, 0, 0, width, height);
+    }
+    img.src = e.target.result;
+  }
+  reader.readAsDataURL(file);
+}
+</script>
+</body>
+</html>
